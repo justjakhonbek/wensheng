@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WENSHENG — Профессиональная защита</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --black:#06080f;
+  --blue:#1565c0;
+  --blue-light:#1e88e5;
+  --blue-dark:#0d47a1;
+  --orange:#f57c00;
+  --orange-light:#ff9800;
+  --white:#f0f4ff;
+  --gray:#0e1420;
+  --gray2:#121826;
+  --muted:#5a6a8a;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'Manrope',sans-serif;overflow-x:hidden;cursor:none;}
+
+/* LIQUID MORPH TRANSITION */
+.pt{position:fixed;inset:0;z-index:9000;pointer-events:none;}
+.pt-blob{position:absolute;inset:0;background:var(--blue);transform:scaleY(0);transform-origin:bottom;border-radius:0 0 50% 50%/0 0 60px 60px;transition:transform .55s cubic-bezier(.76,0,.24,1),border-radius .55s cubic-bezier(.76,0,.24,1);}
+.pt-blob2{position:absolute;inset:0;background:var(--black);transform:scaleY(0);transform-origin:bottom;border-radius:0 0 50% 50%/0 0 60px 60px;transition:transform .55s cubic-bezier(.76,0,.24,1) .08s,border-radius .55s cubic-bezier(.76,0,.24,1) .08s;}
+.pt.out .pt-blob,.pt.out .pt-blob2{transform:scaleY(1);border-radius:0;}
+.pt-blob.up{transform:scaleY(0);transform-origin:top;border-radius:0 0 50% 50%/0 0 60px 60px;transition:transform .55s cubic-bezier(.76,0,.24,1) .08s;}
+.pt-blob2.up{transform:scaleY(0);transform-origin:top;border-radius:0 0 50% 50%/0 0 60px 60px;transition:transform .55s cubic-bezier(.76,0,.24,1) .18s;}
+
+/* CURSOR */
+.cursor{width:10px;height:10px;background:var(--orange);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+.cursor-ring{width:40px;height:40px;border:1px solid rgba(245,124,0,.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+.cursor.big{width:6px;height:6px;}
+.cursor-ring.big{width:64px;height:64px;border-color:var(--orange);background:rgba(245,124,0,.05);}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:24px 60px;transition:background .4s,padding .4s;}
+nav.scrolled{background:rgba(6,8,15,.96);backdrop-filter:blur(20px);padding:16px 60px;border-bottom:1px solid rgba(21,101,192,.15);}
+.logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
+.logo img{width:44px;height:44px;object-fit:contain;}
+.logo-text{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.15em;background:linear-gradient(135deg,var(--blue-light),var(--orange-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+nav ul{list-style:none;display:flex;gap:48px;align-items:center;}
+nav ul a{text-decoration:none;color:rgba(255,255,255,.45);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;transition:color .2s;position:relative;}
+nav ul a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--orange);transition:width .3s;}
+nav ul a:hover{color:var(--white);}
+nav ul a:hover::after{width:100%;}
+.nav-cta{background:linear-gradient(135deg,var(--blue),var(--blue-dark))!important;color:#fff!important;padding:11px 28px!important;font-weight:700!important;border-radius:2px;border:1px solid rgba(30,136,229,.4)!important;}
+.nav-cta::after{display:none!important;}
+.lang-btn{background:none;border:1px solid rgba(21,101,192,.4);color:rgba(30,136,229,.8);font-family:'Manrope',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.15em;padding:7px 14px;cursor:none;transition:all .2s;}
+.lang-btn:hover{border-color:var(--orange);color:var(--orange);}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 80% 50%,rgba(21,101,192,.08) 0%,transparent 65%),radial-gradient(ellipse 40% 40% at 20% 80%,rgba(245,124,0,.04) 0%,transparent 60%),repeating-linear-gradient(0deg,transparent,transparent 80px,rgba(255,255,255,.008) 80px,rgba(255,255,255,.008) 81px),repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(255,255,255,.008) 80px,rgba(255,255,255,.008) 81px);pointer-events:none;}
+.hero-left{display:flex;flex-direction:column;justify-content:flex-end;padding:160px 60px 100px;position:relative;z-index:2;}
+.hero-tag{font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--orange);margin-bottom:28px;display:flex;align-items:center;gap:12px;opacity:0;animation:fadeUp .8s .2s forwards;}
+.hero-tag::before{content:'';width:28px;height:1px;background:var(--orange);}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4.5rem,9vw,9rem);line-height:.93;letter-spacing:.02em;margin-bottom:36px;opacity:0;animation:fadeUp .8s .4s forwards;color:var(--white);}
+.accent{background:linear-gradient(135deg,var(--blue-light),var(--orange-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;filter:drop-shadow(0 0 30px rgba(21,101,192,.4));}
+.hero-desc{font-size:.92rem;line-height:1.9;color:rgba(255,255,255,.45);max-width:380px;margin-bottom:52px;font-weight:300;opacity:0;animation:fadeUp .8s .6s forwards;}
+.hero-btns{display:flex;gap:20px;align-items:center;opacity:0;animation:fadeUp .8s .8s forwards;}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;padding:17px 42px;font-weight:800;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:transform .2s,box-shadow .2s;display:inline-block;border:1px solid rgba(30,136,229,.3);}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 60px rgba(21,101,192,.35);}
+.btn-ghost{color:rgba(255,255,255,.5);font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .2s;}
+.btn-ghost span{transition:transform .2s;}
+.btn-ghost:hover{color:var(--orange);}
+.btn-ghost:hover span{transform:translateX(4px);}
+
+/* LOGO ANIMATION */
+.hero-right{display:flex;align-items:center;justify-content:center;position:relative;z-index:2;}
+.shield-wrap{opacity:0;animation:fadeIn 1.2s .5s forwards;}
+.ring-outer{width:400px;height:400px;border-radius:50%;border:1px solid rgba(21,101,192,.25);display:flex;align-items:center;justify-content:center;position:relative;animation:spin 28s linear infinite;}
+.ring-outer::before{content:'';position:absolute;inset:24px;border-radius:50%;border:1px dashed rgba(245,124,0,.12);}
+.ring-dot{width:10px;height:10px;background:var(--orange);border-radius:50%;position:absolute;top:-5px;left:50%;transform:translateX(-50%);box-shadow:0 0 12px var(--orange),0 0 40px rgba(245,124,0,.5);}
+.ring-inner{animation:spinBack 28s linear infinite;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.hero-logo-big{width:180px;height:180px;object-fit:contain;filter:drop-shadow(0 0 40px rgba(21,101,192,.5)) drop-shadow(0 0 80px rgba(245,124,0,.2));}
+.shield-label{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.45em;background:linear-gradient(135deg,var(--blue-light),var(--orange-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-top:14px;}
+
+/* MARQUEE */
+.marquee{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:14px 0;overflow:hidden;}
+.marquee-inner{display:flex;animation:marquee 18s linear infinite;white-space:nowrap;}
+.marquee-item{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.2em;color:#fff;padding:0 36px;display:inline-flex;align-items:center;gap:36px;opacity:.9;}
+.marquee-item::after{content:'✦';font-size:.55rem;color:var(--orange-light);}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid rgba(255,255,255,.04);}
+.stat{padding:56px 40px;border-right:1px solid rgba(255,255,255,.04);position:relative;}
+.stat:last-child{border-right:none;}
+.stat::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(to right,var(--blue),var(--orange));transition:width .8s ease;}
+.stat.visible::after{width:100%;}
+.stat-n{font-family:'Bebas Neue',sans-serif;font-size:3.2rem;background:linear-gradient(135deg,var(--blue-light),var(--orange-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;letter-spacing:.05em;display:block;}
+.stat-l{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:8px;display:block;}
+
+/* SECTIONS */
+.sec{padding:110px 60px;}
+.sec-eye{font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:var(--orange);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.sec-eye::before{content:'';width:20px;height:1px;background:var(--orange);}
+.sec-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,4.8rem);line-height:.95;letter-spacing:.02em;}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:72px;}
+.link-all{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:3px;transition:color .2s,border-color .2s;}
+.link-all:hover{color:var(--orange);border-color:var(--orange);}
+
+/* CARDS */
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
+.pcard{background:var(--gray);position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.23,1,.32,1);cursor:none;}
+.pcard:hover{transform:translateY(-8px);z-index:2;}
+.pcard::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(21,101,192,.12),transparent);opacity:0;transition:opacity .3s;z-index:1;}
+.pcard:hover::before{opacity:1;}
+.pcard-img{width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;background:#090d18;position:relative;}
+.pcard-img::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(21,101,192,.018) 28px,rgba(21,101,192,.018) 29px);}
+.pcard-emoji{font-size:5.5rem;opacity:.22;transition:transform .4s,opacity .4s;}
+.pcard:hover .pcard-emoji{transform:scale(1.12) rotate(-6deg);opacity:.38;}
+.pbadge{position:absolute;top:18px;left:18px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;font-size:.52rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;padding:5px 11px;z-index:2;}
+.pinfo{padding:26px 26px 30px;}
+.pnum{font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;}
+.pname{font-family:'Bebas Neue',sans-serif;font-size:1.55rem;letter-spacing:.04em;margin-bottom:10px;}
+.pdesc{font-size:.77rem;color:var(--muted);line-height:1.7;font-weight:300;}
+.parrow{position:absolute;bottom:26px;right:26px;width:34px;height:34px;border:1px solid rgba(21,101,192,.4);display:flex;align-items:center;justify-content:center;color:var(--blue-light);font-size:.85rem;opacity:0;transform:translate(8px,8px);transition:opacity .3s,transform .3s;z-index:2;}
+.pcard:hover .parrow{opacity:1;transform:translate(0,0);}
+
+/* FEATURES */
+.feat-sec{background:var(--gray);padding:110px 60px;position:relative;overflow:hidden;}
+.feat-sec::before{content:'WENSHENG';position:absolute;right:-60px;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:12rem;color:rgba(21,101,192,.025);pointer-events:none;line-height:1;}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;margin-top:72px;}
+.feat-list{display:flex;flex-direction:column;}
+.feat-item{display:flex;gap:24px;padding:30px 0;border-bottom:1px solid rgba(255,255,255,.04);transition:padding-left .3s;}
+.feat-item:hover{padding-left:10px;}
+.feat-item:first-child{padding-top:0;}
+.feat-n{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:rgba(21,101,192,.15);line-height:1;flex-shrink:0;width:56px;transition:color .3s;}
+.feat-item:hover .feat-n{color:var(--blue-light);}
+.feat-t{font-weight:700;font-size:.92rem;margin-bottom:9px;}
+.feat-d{font-size:.78rem;color:var(--muted);line-height:1.75;font-weight:300;}
+.feat-right{display:flex;flex-direction:column;gap:14px;}
+.cert-main{background:var(--black);border:1px solid rgba(21,101,192,.15);padding:44px;position:relative;}
+.cert-main::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--blue),var(--orange),transparent);}
+.cert-icon{font-size:3.5rem;margin-bottom:20px;}
+.cert-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.1em;background:linear-gradient(135deg,var(--blue-light),var(--orange-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.cert-text{font-size:.78rem;color:var(--muted);line-height:1.7;}
+.cert-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.cert-sm{background:var(--black);border:1px solid rgba(255,255,255,.04);padding:22px;text-align:center;}
+.cert-sm-icon{font-size:1.6rem;margin-bottom:8px;}
+.cert-sm-title{font-family:'Bebas Neue',sans-serif;font-size:.9rem;letter-spacing:.1em;color:rgba(255,255,255,.4);}
+
+/* CATEGORIES */
+.cat-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:270px 270px;gap:3px;margin-top:72px;}
+.cat{background:var(--gray);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:32px;cursor:none;transition:background .3s;}
+.cat:hover{background:#141d2e;}
+.cat.tall{grid-row:span 2;}
+.cat-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,8,15,.9) 0%,rgba(6,8,15,.2) 60%,transparent 100%);}
+.cat-ico{position:absolute;top:24px;right:24px;font-size:3.2rem;opacity:.12;transition:opacity .3s,transform .4s;}
+.cat:hover .cat-ico{opacity:.35;transform:scale(1.08) rotate(-4deg);}
+.cat-lbl{font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--orange);margin-bottom:8px;position:relative;z-index:1;}
+.cat-name{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.04em;line-height:1.1;position:relative;z-index:1;}
+.cat.tall .cat-name{font-size:2.6rem;}
+.cat-line{width:0;height:2px;background:linear-gradient(to right,var(--blue),var(--orange));margin-top:14px;transition:width .4s;position:relative;z-index:1;}
+.cat:hover .cat-line{width:36px;}
+
+/* REVIEWS */
+.reviews-sec{background:var(--gray);padding:110px 60px;}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:72px;}
+.review-card{background:var(--black);padding:36px 32px;position:relative;transition:transform .3s;}
+.review-card:hover{transform:translateY(-4px);}
+.review-stars{color:var(--orange);font-size:1rem;margin-bottom:16px;letter-spacing:2px;}
+.review-text{font-size:.85rem;line-height:1.8;color:rgba(255,255,255,.5);margin-bottom:24px;font-style:italic;}
+.review-author{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;}
+.review-role{font-size:.68rem;color:var(--muted);margin-top:4px;}
+.review-card::before{content:'❝';position:absolute;top:24px;right:28px;font-size:3rem;color:rgba(21,101,192,.1);font-family:serif;}
+
+/* MAP */
+.map-sec{padding:110px 60px;}
+.map-wrap{margin-top:72px;position:relative;height:400px;overflow:hidden;background:var(--gray);}
+.map-wrap iframe{width:100%;height:100%;border:none;filter:grayscale(100%) invert(90%) contrast(90%);}
+.map-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(6,8,15,.8),transparent);padding:32px;pointer-events:none;}
+.map-address{font-size:.8rem;color:var(--white);display:flex;align-items:center;gap:10px;}
+.map-address::before{content:'📍';font-size:1rem;}
+
+/* CTA */
+.cta{margin:0 60px 110px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:90px 80px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:60px;position:relative;overflow:hidden;border:1px solid rgba(30,136,229,.2);}
+.cta::before{content:'';position:absolute;right:-80px;top:-80px;width:360px;height:360px;border-radius:50%;background:rgba(245,124,0,.06);}
+.cta::after{content:'';position:absolute;left:-40px;bottom:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.03);}
+.cta-eye{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:14px;}
+.cta-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4.5vw,4rem);color:#fff;line-height:.95;letter-spacing:.02em;}
+.cta-sub{font-size:.88rem;color:rgba(255,255,255,.5);margin-top:14px;max-width:380px;}
+.cta-right{display:flex;flex-direction:column;gap:14px;position:relative;z-index:1;}
+.btn-dark{background:var(--orange);color:#fff;padding:17px 42px;font-weight:700;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:transform .2s,box-shadow .2s;display:block;text-align:center;}
+.btn-dark:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(245,124,0,.4);}
+.cta-phone{font-size:.78rem;color:rgba(255,255,255,.5);text-align:center;font-weight:600;}
+
+/* WHATSAPP */
+.wa-btn{position:fixed;bottom:32px;right:32px;width:58px;height:58px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;z-index:500;box-shadow:0 4px 24px rgba(37,211,102,.4);transition:transform .2s,box-shadow .2s;text-decoration:none;animation:waPulse 2.5s infinite;}
+.wa-btn:hover{transform:scale(1.1);box-shadow:0 8px 40px rgba(37,211,102,.5);}
+@keyframes waPulse{0%,100%{box-shadow:0 4px 24px rgba(37,211,102,.4)}50%{box-shadow:0 4px 40px rgba(37,211,102,.7)}}
+
+/* FOOTER */
+footer{background:var(--gray);padding:72px 60px 0;}
+.foot-grid{display:grid;grid-template-columns:2.2fr 1fr 1fr 1.4fr;gap:56px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,.04);}
+.foot-logo{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.foot-logo img{width:36px;height:36px;object-fit:contain;}
+.foot-logo-text{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.15em;background:linear-gradient(135deg,var(--blue-light),var(--orange-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.foot-desc{font-size:.78rem;color:#2a3550;line-height:1.8;max-width:240px;}
+.foot-col h4{font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--orange);margin-bottom:22px;font-weight:700;}
+.foot-col ul{list-style:none;display:flex;flex-direction:column;gap:11px;}
+.foot-col ul a{text-decoration:none;color:#2a3550;font-size:.8rem;transition:color .2s;}
+.foot-col ul a:hover{color:var(--white);}
+.foot-ci{margin-bottom:14px;}
+.foot-cl{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);margin-bottom:4px;}
+.foot-cv{font-size:.8rem;color:#2a3550;line-height:1.6;}
+.foot-cv a{color:#2a3550;text-decoration:none;transition:color .2s;}
+.foot-cv a:hover{color:var(--white);}
+.foot-bot{display:flex;align-items:center;justify-content:space-between;padding:22px 0;}
+.foot-copy{font-size:.7rem;color:#1a2238;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes spinBack{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+.reveal{opacity:0;transform:translateY(44px);transition:opacity .8s cubic-bezier(.23,1,.32,1),transform .8s cubic-bezier(.23,1,.32,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
+
+@media(max-width:1024px){
+  nav{padding:16px 24px;}nav ul{display:none;}
+  .hero{grid-template-columns:1fr;}.hero-right{display:none;}
+  .hero-left{padding:110px 24px 80px;}
+  .stats{grid-template-columns:1fr 1fr;}
+  .sec{padding:72px 24px;}
+  .pgrid{grid-template-columns:1fr 1fr;}
+  .feat-sec{padding:72px 24px;}.feat-grid{grid-template-columns:1fr;}
+  .cat-grid{grid-template-columns:1fr;grid-template-rows:auto;}.cat.tall{grid-row:span 1;}
+  .cta{margin:0 24px 72px;padding:52px 28px;grid-template-columns:1fr;}
+  .reviews-sec{padding:72px 24px;}.reviews-grid{grid-template-columns:1fr;}
+  .map-sec{padding:72px 24px;}
+  footer{padding:52px 24px 0;}.foot-grid{grid-template-columns:1fr 1fr;gap:36px;}
+}
+</style>
+</head>
+<body>
+
+<div class="pt" id="pt"><div class="pt-blob"></div><div class="pt-blob2"></div></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav id="nav">
+  <a href="wensheng-index.html" class="logo">
+    <img src="wensheng-logo.jpg" alt="WENSHENG" onerror="this.style.display='none'">
+    <span class="logo-text">WENSHENG</span>
+  </a>
+  <ul>
+    <li><a href="#products">Каталог</a></li>
+    <li><a href="#features">О нас</a></li>
+    <li><a href="#categories">Категории</a></li>
+    <li><a href="#contact" class="nav-cta">Связаться</a></li>
+    <li><button class="lang-btn" onclick="toggleLang()" id="langBtn">O'Z</button></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-left">
+    <p class="hero-tag" id="heroTag">Профессиональная защита · Ташкент · 2026</p>
+    <h1 id="heroH1">НАДЁЖНАЯ<br><span class="accent">ЗАЩИТА</span>НА РАБОТЕ</h1>
+    <p class="hero-desc" id="heroDesc">Спецодежда, спецобувь, рабочие перчатки и материалы для пошива — всё для безопасности и комфорта вашего персонала.</p>
+    <div class="hero-btns">
+      <a href="wensheng-catalog.html" class="btn-primary" id="heroBtn">Смотреть каталог</a>
+      <a href="#contact" class="btn-ghost">Запрос цены <span>→</span></a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="shield-wrap">
+      <div class="ring-outer">
+        <div class="ring-dot"></div>
+        <div class="ring-inner">
+          <img src="wensheng-logo.jpg" alt="WENSHENG" class="hero-logo-big" onerror="this.style.fontSize='8rem';this.outerHTML='<div style=font-size:8rem>🛡️</div>'">
+          <div class="shield-label">WENSHENG</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-inner">
+    <span class="marquee-item">СПЕЦОБУВЬ</span><span class="marquee-item">СПЕЦОДЕЖДА</span><span class="marquee-item">ПЕРЧАТКИ</span><span class="marquee-item">МАТЕРИАЛЫ</span><span class="marquee-item">ЗАЩИТА S3</span><span class="marquee-item">WENSHENG 2026</span><span class="marquee-item">ТАШКЕНТ</span><span class="marquee-item">СПЕЦОБУВЬ</span><span class="marquee-item">СПЕЦОДЕЖДА</span><span class="marquee-item">ПЕРЧАТКИ</span><span class="marquee-item">МАТЕРИАЛЫ</span><span class="marquee-item">ЗАЩИТА S3</span><span class="marquee-item">WENSHENG 2026</span><span class="marquee-item">ТАШКЕНТ</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat reveal"><span class="stat-n" data-target="1200" data-suffix="+">0+</span><span class="stat-l">Позиций в каталоге</span></div>
+  <div class="stat reveal d1"><span class="stat-n">2026</span><span class="stat-l">Год основания</span></div>
+  <div class="stat reveal d2"><span class="stat-n" data-target="500" data-suffix="+">0+</span><span class="stat-l">Клиентов по стране</span></div>
+  <div class="stat reveal d3"><span class="stat-n">48Ч</span><span class="stat-l">Доставка по городу</span></div>
+</div>
+
+<section class="sec" id="products">
+  <div class="sec-head">
+    <div><p class="sec-eye reveal">Наша продукция</p><h2 class="sec-h reveal d1">ЧТО МЫ<br>ПРЕДЛАГАЕМ</h2></div>
+    <a href="wensheng-catalog.html" class="link-all reveal" id="allLink">Весь каталог →</a>
+  </div>
+  <div class="pgrid">
+    <div class="pcard reveal" id="shoeCard">
+      <div class="pcard-img"><span class="pcard-emoji">👟</span></div>
+      <span class="pbadge">S3</span>
+      <div class="pinfo"><div class="pnum">— 01</div><div class="pname">СПЕЦОБУВЬ</div><p class="pdesc">Защитные ботинки и сапоги с металлическим носком, антипрокольной подошвой.</p></div>
+      <div class="parrow">→</div>
+    </div>
+    <div class="pcard reveal d1">
+      <div class="pcard-img"><span class="pcard-emoji">🦺</span></div>
+      <div class="pinfo"><div class="pnum">— 02</div><div class="pname">СПЕЦОДЕЖДА</div><p class="pdesc">Костюмы, комбинезоны, куртки со световозвращающими элементами.</p></div>
+      <div class="parrow">→</div>
+    </div>
+    <div class="pcard reveal d2">
+      <div class="pcard-img"><span class="pcard-emoji">🧵</span></div>
+      <div class="pinfo"><div class="pnum">— 03</div><div class="pname">МАТЕРИАЛЫ</div><p class="pdesc">Ткани для пошива: саржа, оксфорд, флис, сигнальные ткани.</p></div>
+      <div class="parrow">→</div>
+    </div>
+    <div class="pcard reveal d3">
+      <div class="pcard-img"><span class="pcard-emoji">🧤</span></div>
+      <div class="pinfo"><div class="pnum">— 04</div><div class="pname">ПЕРЧАТКИ</div><p class="pdesc">Нитриловые, кожаные, трикотажные. Защита от любых воздействий.</p></div>
+      <div class="parrow">→</div>
+    </div>
+  </div>
+</section>
+
+<section class="feat-sec" id="features">
+  <p class="sec-eye reveal">Почему WENSHENG</p>
+  <h2 class="sec-h reveal d1">НАШИ<br>ПРЕИМУЩЕСТВА</h2>
+  <div class="feat-grid">
+    <div class="feat-list">
+      <div class="feat-item reveal"><div class="feat-n">01</div><div><div class="feat-t">Сертифицированная продукция</div><p class="feat-d">Вся продукция имеет сертификаты соответствия ГОСТ и ТР ТС. Документы предоставляем по запросу.</p></div></div>
+      <div class="feat-item reveal d1"><div class="feat-n">02</div><div><div class="feat-t">Работаем с юридическими лицами</div><p class="feat-d">Безналичный расчёт, договор, счёт-фактура. Оснащение предприятий под ключ.</p></div></div>
+      <div class="feat-item reveal d2"><div class="feat-n">03</div><div><div class="feat-t">Оптовые поставки</div><p class="feat-d">Скидки от объёма. Постоянным клиентам — персональные условия и приоритет.</p></div></div>
+      <div class="feat-item reveal d3"><div class="feat-n">04</div><div><div class="feat-t">Нанесение логотипа</div><p class="feat-d">Вышивка и шелкография на спецодежде с вашим брендом.</p></div></div>
+    </div>
+    <div class="feat-right reveal">
+      <div class="cert-main"><div class="cert-icon">🏆</div><div class="cert-title">ГОСТ CERTIFIED</div><p class="cert-text">Продукция соответствует государственным стандартам безопасности и охраны труда Республики Узбекистан</p></div>
+      <div class="cert-row"><div class="cert-sm"><div class="cert-sm-icon">⭐</div><div class="cert-sm-title">ISO 9001</div></div><div class="cert-sm"><div class="cert-sm-icon">🛡️</div><div class="cert-sm-title">ТР ТС</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="categories">
+  <p class="sec-eye reveal">Категории</p>
+  <h2 class="sec-h reveal d1">ВСЁ ДЛЯ<br>ЗАЩИТЫ</h2>
+  <div class="cat-grid">
+    <div class="cat tall reveal" id="catShoe"><div class="cat-overlay"></div><span class="cat-ico">👟</span><div class="cat-lbl">Популярное</div><div class="cat-name">ЗИМНЯЯ СПЕЦОБУВЬ ДЛЯ УЛИЦЫ</div><div class="cat-line"></div></div>
+    <div class="cat reveal d1"><div class="cat-overlay"></div><span class="cat-ico">🦺</span><div class="cat-lbl">Новинки</div><div class="cat-name">КОЖАНЫЕ БОТИНКИ S3</div><div class="cat-line"></div></div>
+    <div class="cat reveal d2"><div class="cat-overlay"></div><span class="cat-ico">🧤</span><div class="cat-lbl">Хит продаж</div><div class="cat-name">НИТРИЛОВЫЕ ПЕРЧАТКИ</div><div class="cat-line"></div></div>
+    <div class="cat reveal d3"><div class="cat-overlay"></div><span class="cat-ico">🧵</span><div class="cat-lbl">Оптом</div><div class="cat-name">СИГНАЛЬНАЯ ТКАНЬ</div><div class="cat-line"></div></div>
+    <div class="cat reveal d4"><div class="cat-overlay"></div><span class="cat-ico">🔷</span><div class="cat-lbl">Акция</div><div class="cat-name">ЖИЛЕТЫ СИГНАЛЬНЫЕ</div><div class="cat-line"></div></div>
+  </div>
+</section>
+
+<section class="reviews-sec" id="reviews">
+  <p class="sec-eye reveal">Отзывы клиентов</p>
+  <h2 class="sec-h reveal d1">ЧТО ГОВОРЯТ<br>КЛИЕНТЫ</h2>
+  <div class="reviews-grid">
+    <div class="review-card reveal"><div class="review-stars">★★★★★</div><p class="review-text">"Заказали 50 пар для всего производства. Качество отличное — кожа мягкая, подошва не скользит. Доставили за 2 дня."</p><div class="review-author">Алишер Каримов</div><div class="review-role">Начальник производства, Ташкент</div></div>
+    <div class="review-card reveal d1"><div class="review-stars">★★★★★</div><p class="review-text">"Работаем со строительной компанией. Ботинки носим уже 8 месяцев — ни одной жалобы от рабочих. Берём снова."</p><div class="review-author">Бахром Усманов</div><div class="review-role">Прораб, СК Стройгруп</div></div>
+    <div class="review-card reveal d2"><div class="review-stars">★★★★★</div><p class="review-text">"Очень доволен сервисом. Подобрали нужный размер, привезли быстро. Цена хорошая при таком качестве."</p><div class="review-author">Санжар Рашидов</div><div class="review-role">Частный заказчик, Ташкент</div></div>
+  </div>
+</section>
+
+<section class="map-sec">
+  <p class="sec-eye reveal">Как нас найти</p>
+  <h2 class="sec-h reveal d1">МЫ В<br>ТАШКЕНТЕ</h2>
+  <div class="map-wrap reveal">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2997.5!2d69.2401!3d41.2995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDE3JzU4LjIiTiA2OcKwMTQnMjQuNCJF!5e0!3m2!1sru!2s!4v1234567890" allowfullscreen="" loading="lazy"></iframe>
+    <div class="map-overlay"><div class="map-address">г. Ташкент, Янгихаётский район, Fayzli MFY, Rayxon ko'chasi, 107-uy</div></div>
+  </div>
+</section>
+
+<div class="cta" id="contact">
+  <div><p class="cta-eye">Связаться с нами</p><div class="cta-h">ПОЛУЧИТЕ<br>ПРАЙС-ЛИСТ</div><p class="cta-sub">Отправим актуальный каталог с ценами в течение часа. Работаем с юридическими лицами.</p></div>
+  <div class="cta-right"><a href="tel:+998959760747" class="btn-dark">📞 Позвонить</a><div class="cta-phone">+998 95 976-07-47</div></div>
+</div>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-logo"><img src="wensheng-logo.jpg" alt="W" onerror="this.style.display='none'"><span class="foot-logo-text">WENSHENG</span></div>
+      <p class="foot-desc">Надёжный поставщик средств индивидуальной защиты и спецодежды. Ташкент, Узбекистан. С 2026 года.</p>
+    </div>
+    <div class="foot-col"><h4>Каталог</h4><ul><li><a href="wensheng-catalog.html" id="footCat">Спецобувь</a></li><li><a href="#">Спецодежда</a></li><li><a href="#">Перчатки</a></li><li><a href="#">Материалы</a></li></ul></div>
+    <div class="foot-col"><h4>Компания</h4><ul><li><a href="#">О нас</a></li><li><a href="#">Сертификаты</a></li><li><a href="#">Доставка</a></li><li><a href="#contact">Контакты</a></li></ul></div>
+    <div class="foot-col"><h4>Контакты</h4>
+      <div class="foot-ci"><div class="foot-cl">Телефон</div><div class="foot-cv"><a href="tel:+998959760747">+998 95 976-07-47</a></div></div>
+      <div class="foot-ci"><div class="foot-cl">Email</div><div class="foot-cv"><a href="mailto:justjakhonbek@gmail.com">justjakhonbek@gmail.com</a></div></div>
+      <div class="foot-ci"><div class="foot-cl">Адрес</div><div class="foot-cv">г. Ташкент, Янгихаётский район,<br>Fayzli MFY, Rayxon ko'chasi, 107-uy</div></div>
+    </div>
+  </div>
+  <div class="foot-bot"><p class="foot-copy">© 2026 WENSHENG. Все права защищены.</p><p class="foot-copy">Спецодежда и средства защиты · Узбекистан</p></div>
+</footer>
+
+<a href="https://wa.me/998959760747?text=Здравствуйте!%20Интересует%20спецобувь%20WENSHENG." class="wa-btn" target="_blank">💬</a>
+
+<script>
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function anim(){cur.style.left=mx+'px';cur.style.top=my+'px';rx+=(mx-rx)*.18;ry+=(my-ry)*.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+document.querySelectorAll('a,button,.pcard,.cat').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.classList.add('big');ring.classList.add('big');});
+  el.addEventListener('mouseleave',()=>{cur.classList.remove('big');ring.classList.remove('big');});
+});
+
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60));
+
+function goTo(url){const pt=document.getElementById('pt');pt.classList.add('out');setTimeout(()=>location.href=url,580);}
+document.getElementById('heroBtn').onclick=e=>{e.preventDefault();goTo('wensheng-catalog.html');};
+document.getElementById('allLink').onclick=e=>{e.preventDefault();goTo('wensheng-catalog.html');};
+document.getElementById('shoeCard').onclick=()=>goTo('wensheng-catalog.html');
+document.getElementById('catShoe').onclick=()=>goTo('wensheng-catalog.html');
+document.getElementById('footCat').onclick=e=>{e.preventDefault();goTo('wensheng-catalog.html');};
+
+window.addEventListener('load',()=>{
+  const pt=document.getElementById('pt');
+  const b1=pt.querySelector('.pt-blob'),b2=pt.querySelector('.pt-blob2');
+  b1.style.cssText='transform:scaleY(1);border-radius:0;transition:none;';
+  b2.style.cssText='transform:scaleY(1);border-radius:0;transition:none;';
+  requestAnimationFrame(()=>{requestAnimationFrame(()=>{
+    b1.classList.add('up');b2.classList.add('up');
+    setTimeout(()=>{b1.style.cssText='';b2.style.cssText='';b1.classList.remove('up');b2.classList.remove('up');},900);
+  });});
+});
+
+const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+const so=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      const n=e.target.querySelector('[data-target]');
+      if(n){const tgt=+n.dataset.target,sfx=n.dataset.suffix||'',t0=performance.now();
+        (function s(t){const p=Math.min((t-t0)/1800,1);n.textContent=Math.floor((1-Math.pow(1-p,4))*tgt)+sfx;if(p<1)requestAnimationFrame(s);})(performance.now());}
+      so.unobserve(e.target);
+    }
+  });
+},{threshold:.3});
+document.querySelectorAll('.stat').forEach(el=>so.observe(el));
+
+// LANGUAGE
+const T={
+  ru:{tag:'Профессиональная защита · Ташкент · 2026',h1:'НАДЁЖНАЯ<br><span class="accent">ЗАЩИТА</span>НА РАБОТЕ',desc:'Спецодежда, спецобувь, рабочие перчатки и материалы для пошива — всё для безопасности и комфорта вашего персонала.',btn:'Смотреть каталог'},
+  uz:{tag:"Professional himoya · Toshkent · 2026",h1:'ISHONCHLI<br><span class="accent">HIMOYA</span>ISHDA',desc:"Maxsus kiyim, maxsus poyabzal, ish qo'lqoplari va tikuvchilik materiallari — xodimlaringiz xavfsizligi uchun hammasi.",btn:"Katalogni ko'rish"}
+};
+let lang='ru';
+function toggleLang(){
+  lang=lang==='ru'?'uz':'ru';
+  document.getElementById('langBtn').textContent=lang==='ru'?"O'Z":'RU';
+  const t=T[lang];
+  document.getElementById('heroTag').textContent=t.tag;
+  document.getElementById('heroH1').innerHTML=t.h1;
+  document.getElementById('heroDesc').textContent=t.desc;
+  document.getElementById('heroBtn').textContent=t.btn;
+}
+</script>
+</body>
+</html>

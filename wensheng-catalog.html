@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WENSHENG — Каталог спецобуви</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--black:#06080f;--blue:#1565c0;--blue-light:#1e88e5;--blue-dark:#0d47a1;--orange:#f57c00;--orange-light:#ff9800;--white:#f0f4ff;--gray:#0e1420;--gray2:#121826;--muted:#5a6a8a;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'Manrope',sans-serif;overflow-x:hidden;cursor:none;}
+
+.pt{position:fixed;inset:0;z-index:9000;pointer-events:none;}
+.pt-blob{position:absolute;inset:0;background:var(--blue);transform:scaleY(0);transform-origin:bottom;border-radius:0 0 50% 50%/0 0 60px 60px;transition:transform .55s cubic-bezier(.76,0,.24,1),border-radius .55s cubic-bezier(.76,0,.24,1);}
+.pt-blob2{position:absolute;inset:0;background:var(--black);transform:scaleY(0);transform-origin:bottom;border-radius:0 0 50% 50%/0 0 60px 60px;transition:transform .55s cubic-bezier(.76,0,.24,1) .08s,border-radius .55s cubic-bezier(.76,0,.24,1) .08s;}
+.pt.out .pt-blob,.pt.out .pt-blob2{transform:scaleY(1);border-radius:0;}
+.pt-blob.up{transform:scaleY(0);transform-origin:top;border-radius:0 0 50% 50%/0 0 60px 60px;transition:transform .55s cubic-bezier(.76,0,.24,1) .08s;}
+.pt-blob2.up{transform:scaleY(0);transform-origin:top;border-radius:0 0 50% 50%/0 0 60px 60px;transition:transform .55s cubic-bezier(.76,0,.24,1) .18s;}
+
+.cursor{width:10px;height:10px;background:var(--orange);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+.cursor-ring{width:40px;height:40px;border:1px solid rgba(245,124,0,.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+.cursor.big{width:6px;height:6px;}
+.cursor-ring.big{width:64px;height:64px;border-color:var(--orange);background:rgba(245,124,0,.05);}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:22px 60px;transition:background .4s,padding .4s;}
+nav.scrolled{background:rgba(6,8,15,.96);backdrop-filter:blur(20px);padding:14px 60px;border-bottom:1px solid rgba(21,101,192,.12);}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo img{width:38px;height:38px;object-fit:contain;}
+.logo-text{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.15em;background:linear-gradient(135deg,var(--blue-light),var(--orange-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-back{display:flex;align-items:center;gap:8px;text-decoration:none;color:rgba(255,255,255,.45);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;font-weight:600;transition:color .2s;cursor:none;}
+.nav-back:hover{color:var(--orange);}
+.nav-back::before{content:'←';font-size:1rem;transition:transform .2s;}
+.nav-back:hover::before{transform:translateX(-4px);}
+
+.cat-hero{padding:140px 60px 60px;position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.04);}
+.cat-hero::before{content:'КАТАЛОГ';position:absolute;right:-40px;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:16rem;color:rgba(21,101,192,.03);pointer-events:none;line-height:1;}
+.cat-hero-tag{font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:var(--orange);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.cat-hero-tag::before{content:'';width:20px;height:1px;background:var(--orange);}
+.cat-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,6rem);line-height:.95;letter-spacing:.02em;margin-bottom:20px;}
+.cat-hero h1 span{background:linear-gradient(135deg,var(--blue-light),var(--orange-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.cat-hero-sub{font-size:.88rem;color:var(--muted);max-width:500px;line-height:1.8;}
+
+.filters{padding:32px 60px;display:flex;gap:12px;border-bottom:1px solid rgba(255,255,255,.04);position:sticky;top:60px;background:rgba(6,8,15,.95);backdrop-filter:blur(20px);z-index:100;}
+.filter-btn{font-family:'Manrope',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:10px 24px;border:1px solid rgba(255,255,255,.08);background:transparent;color:var(--muted);cursor:none;transition:all .25s;}
+.filter-btn:hover{border-color:rgba(245,124,0,.4);color:var(--white);}
+.filter-btn.active{background:linear-gradient(135deg,var(--blue),var(--blue-dark));border-color:var(--blue);color:#fff;}
+
+.search-bar{padding:20px 60px;position:relative;border-bottom:1px solid rgba(255,255,255,.04);}
+.search-bar input{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(21,101,192,.15);color:var(--white);font-family:'Manrope',sans-serif;font-size:.85rem;padding:14px 48px 14px 20px;outline:none;transition:border-color .2s;}
+.search-bar input:focus{border-color:rgba(245,124,0,.4);}
+.search-bar input::placeholder{color:var(--muted);}
+.search-icon{position:absolute;right:80px;top:50%;transform:translateY(-50%);font-size:1rem;opacity:.4;}
+.no-results{display:none;text-align:center;padding:80px;color:var(--muted);font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;grid-column:1/-1;}
+
+.catalog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:2px;}
+.product-card{background:var(--gray);position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.23,1,.32,1);cursor:none;}
+.product-card:hover{transform:translateY(-6px);z-index:2;}
+.product-card::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(21,101,192,.1),transparent);opacity:0;transition:opacity .3s;z-index:1;}
+.product-card:hover::before{opacity:1;}
+.card-img{width:100%;aspect-ratio:4/3;overflow:hidden;background:#090d18;position:relative;display:flex;align-items:center;justify-content:center;}
+.card-img img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .5s;}
+.product-card:hover .card-img img{transform:scale(1.04);}
+.card-img-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;opacity:.2;}
+.card-img-placeholder span:first-child{font-size:4rem;}
+.card-img-placeholder span:last-child{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;}
+.card-badge{position:absolute;top:16px;left:16px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;font-size:.5rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;padding:5px 10px;z-index:2;}
+.card-badge.winter{background:linear-gradient(135deg,#1565c0,#0288d1);color:#fff;}
+.card-body{padding:24px 24px 28px;}
+.card-num{font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;}
+.card-name{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.04em;margin-bottom:8px;}
+.card-cat{font-size:.72rem;color:var(--muted);margin-bottom:12px;}
+.card-arrow{position:absolute;bottom:24px;right:24px;width:32px;height:32px;border:1px solid rgba(21,101,192,.3);display:flex;align-items:center;justify-content:center;color:var(--blue-light);font-size:.8rem;opacity:0;transform:translate(6px,6px);transition:opacity .3s,transform .3s;z-index:2;}
+.product-card:hover .card-arrow{opacity:1;transform:translate(0,0);}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(8px);}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--gray2);width:92%;max-width:1000px;max-height:92vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;transform:translateY(30px);transition:transform .4s cubic-bezier(.23,1,.32,1);scrollbar-width:none;}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal::-webkit-scrollbar{display:none;}
+.modal-gallery{position:relative;background:#090d18;min-height:400px;display:flex;align-items:center;justify-content:center;}
+.modal-main-img{width:100%;height:100%;min-height:400px;object-fit:contain;padding:20px;display:block;}
+.modal-no-photo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:.15;padding:60px;}
+.modal-no-photo span:first-child{font-size:5rem;}
+.modal-no-photo span:last-child{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;}
+.modal-prev,.modal-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(21,101,192,.15);border:1px solid rgba(21,101,192,.3);color:var(--blue-light);width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:none;transition:background .2s;}
+.modal-prev{left:12px;}
+.modal-next{right:12px;}
+.modal-prev:hover,.modal-next:hover{background:rgba(21,101,192,.35);}
+.modal-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;}
+.modal-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);cursor:none;transition:background .2s;}
+.modal-dot.active{background:var(--orange);}
+.modal-info{padding:48px 40px;display:flex;flex-direction:column;position:relative;}
+.modal-close{position:absolute;top:20px;right:20px;background:none;border:1px solid rgba(255,255,255,.08);color:var(--muted);width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:none;transition:all .2s;}
+.modal-close:hover{border-color:var(--orange);color:var(--orange);}
+.modal-num{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.04em;line-height:.95;margin-bottom:8px;}
+.modal-cat{font-size:.78rem;color:var(--muted);margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.05);}
+.modal-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.tag{font-size:.58rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:5px 12px;border:1px solid rgba(21,101,192,.25);color:rgba(30,136,229,.8);}
+.specs-title{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+.specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;}
+.spec-item{background:rgba(255,255,255,.025);padding:12px 16px;}
+.spec-key{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.spec-val{font-size:.82rem;font-weight:600;}
+.btn-request{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;padding:15px 32px;font-weight:800;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;display:block;text-align:center;transition:transform .2s,box-shadow .2s;margin-top:auto;}
+.btn-request:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(21,101,192,.35);}
+
+.wa-btn{position:fixed;bottom:32px;right:32px;width:58px;height:58px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;z-index:500;box-shadow:0 4px 24px rgba(37,211,102,.4);transition:transform .2s;text-decoration:none;animation:waPulse 2.5s infinite;}
+.wa-btn:hover{transform:scale(1.1);}
+@keyframes waPulse{0%,100%{box-shadow:0 4px 24px rgba(37,211,102,.4)}50%{box-shadow:0 4px 40px rgba(37,211,102,.7)}}
+
+.cat-footer{padding:48px 60px;border-top:1px solid rgba(255,255,255,.04);display:flex;align-items:center;justify-content:space-between;}
+.cat-footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.15em;background:linear-gradient(135deg,var(--blue-light),var(--orange-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.cat-footer-links{display:flex;gap:32px;}
+.cat-footer-links a{text-decoration:none;color:var(--muted);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;}
+.cat-footer-links a:hover{color:var(--orange);}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.23,1,.32,1),transform .7s cubic-bezier(.23,1,.32,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.d1{transition-delay:.08s;}.d2{transition-delay:.16s;}.d3{transition-delay:.24s;}
+
+@media(max-width:900px){
+  nav{padding:14px 20px;}
+  .cat-hero{padding:110px 20px 40px;}
+  .filters,.search-bar{padding:20px;top:52px;}
+  .catalog-grid{grid-template-columns:1fr 1fr;}
+  .modal{grid-template-columns:1fr;}
+  .modal-gallery{min-height:280px;}
+  .modal-main-img{min-height:280px;}
+  .modal-info{padding:28px 24px;}
+  .cat-footer{padding:32px 20px;flex-direction:column;gap:20px;text-align:center;}
+}
+@media(max-width:600px){.catalog-grid{grid-template-columns:1fr;}.specs-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="pt" id="pt"><div class="pt-blob"></div><div class="pt-blob2"></div></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav id="nav">
+  <a href="wensheng-index.html" class="logo" id="homeLink">
+    <img src="wensheng-logo.jpg" alt="W" onerror="this.style.display='none'">
+    <span class="logo-text">WENSHENG</span>
+  </a>
+  <a href="wensheng-index.html" class="nav-back" id="backLink">На главную</a>
+</nav>
+
+<div class="cat-hero">
+  <p class="cat-hero-tag">Спецобувь · 2026</p>
+  <h1>КАТАЛОГ<br><span>СПЕЦОБУВИ</span></h1>
+  <p class="cat-hero-sub">Защитная обувь категории S3 с металлическим носком и антипрокольной подошвой. Производство Узбекистан.</p>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" data-filter="all">Все</button>
+  <button class="filter-btn" data-filter="s3">S3</button>
+  <button class="filter-btn" data-filter="winter">Зимние</button>
+</div>
+
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="Поиск модели..." oninput="searchCards(this.value)">
+  <span class="search-icon">🔍</span>
+</div>
+
+<div class="catalog-grid">
+  <div class="product-card reveal" data-cat="s3" onclick="openModal(1)">
+    <div class="card-img"><img src="01.jpeg" alt="Модель 01" onerror="this.parentElement.innerHTML='<div class=card-img-placeholder><span>👟</span><span>Фото скоро</span></div>'"></div>
+    <span class="card-badge">S3</span>
+    <div class="card-body"><div class="card-num">СПЕЦОБУВЬ — 01</div><div class="card-name">МОДЕЛЬ 01</div><div class="card-cat">Защитные ботинки · S3</div></div>
+    <div class="card-arrow">→</div>
+  </div>
+  <div class="product-card reveal d1" data-cat="s3" onclick="openModal(2)">
+    <div class="card-img"><img src="02.jpeg" alt="Модель 02" onerror="this.parentElement.innerHTML='<div class=card-img-placeholder><span>👟</span><span>Фото скоро</span></div>'"></div>
+    <span class="card-badge">S3</span>
+    <div class="card-body"><div class="card-num">СПЕЦОБУВЬ — 02</div><div class="card-name">МОДЕЛЬ 02</div><div class="card-cat">Ботинки TSG-02 · S3</div></div>
+    <div class="card-arrow">→</div>
+  </div>
+  <div class="product-card reveal d2" data-cat="s3" onclick="openModal(3)">
+    <div class="card-img"><img src="03.jpeg" alt="Модель 03" onerror="this.parentElement.innerHTML='<div class=card-img-placeholder><span>👟</span><span>Фото скоро</span></div>'"></div>
+    <span class="card-badge">S3</span>
+    <div class="card-body"><div class="card-num">СПЕЦОБУВЬ — 03</div><div class="card-name">МОДЕЛЬ 03</div><div class="card-cat">Ботинки TSG-03 · S3</div></div>
+    <div class="card-arrow">→</div>
+  </div>
+  <div class="product-card reveal" data-cat="s3" onclick="openModal(5)">
+    <div class="card-img"><div class="card-img-placeholder"><span>🥾</span><span>Фото скоро</span></div></div>
+    <span class="card-badge">S3</span>
+    <div class="card-body"><div class="card-num">СПЕЦОБУВЬ — 05</div><div class="card-name">МОДЕЛЬ 05</div><div class="card-cat">Рабочие сапоги · S3</div></div>
+    <div class="card-arrow">→</div>
+  </div>
+  <div class="product-card reveal d1" data-cat="winter" onclick="openModal('01m')">
+    <div class="card-img"><div class="card-img-placeholder"><span>🥾</span><span>Фото скоро</span></div></div>
+    <span class="card-badge winter">Зимние</span>
+    <div class="card-body"><div class="card-num">СПЕЦОБУВЬ — 01М</div><div class="card-name">МОДЕЛЬ 01М</div><div class="card-cat">Зимние ботинки · S3 · Утеплённые</div></div>
+    <div class="card-arrow">→</div>
+  </div>
+  <div class="no-results" id="noResults">Ничего не найдено</div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-gallery" id="mGallery">
+      <img src="" alt="" class="modal-main-img" id="mMainImg" style="display:none;">
+      <div class="modal-no-photo" id="mNoPhoto"><span>👟</span><span>Фото скоро</span></div>
+      <button class="modal-prev" id="mPrev" onclick="changePhoto(-1)" style="display:none;">←</button>
+      <button class="modal-next" id="mNext" onclick="changePhoto(1)" style="display:none;">→</button>
+      <div class="modal-dots" id="mDots"></div>
+    </div>
+    <div class="modal-info">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-num" id="mNum"></div>
+      <div class="modal-title" id="mTitle"></div>
+      <div class="modal-cat" id="mCat"></div>
+      <div class="modal-tags" id="mTags"></div>
+      <div class="specs-title">— Характеристики</div>
+      <div class="specs-grid" id="mSpecs"></div>
+      <a href="wensheng-index.html#contact" class="btn-request">Запросить цену →</a>
+    </div>
+  </div>
+</div>
+
+<footer class="cat-footer">
+  <div class="cat-footer-logo">WENSHENG</div>
+  <div class="cat-footer-links">
+    <a href="tel:+998959760747">+998 95 976-07-47</a>
+    <a href="mailto:justjakhonbek@gmail.com">justjakhonbek@gmail.com</a>
+    <a href="wensheng-index.html" id="footHome">На главную</a>
+  </div>
+</footer>
+
+<a href="https://wa.me/998959760747?text=Здравствуйте!%20Интересует%20спецобувь%20WENSHENG." class="wa-btn" target="_blank">💬</a>
+
+<script>
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function anim(){cur.style.left=mx+'px';cur.style.top=my+'px';rx+=(mx-rx)*.18;ry+=(my-ry)*.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+document.querySelectorAll('a,button,.product-card,.filter-btn,.modal-dot').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.classList.add('big');ring.classList.add('big');});
+  el.addEventListener('mouseleave',()=>{cur.classList.remove('big');ring.classList.remove('big');});
+});
+
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60));
+
+function goTo(url){const pt=document.getElementById('pt');pt.classList.add('out');setTimeout(()=>location.href=url,580);}
+document.getElementById('homeLink').onclick=e=>{e.preventDefault();goTo('wensheng-index.html');};
+document.getElementById('backLink').onclick=e=>{e.preventDefault();goTo('wensheng-index.html');};
+document.getElementById('footHome').onclick=e=>{e.preventDefault();goTo('wensheng-index.html');};
+
+window.addEventListener('load',()=>{
+  const pt=document.getElementById('pt');
+  const b1=pt.querySelector('.pt-blob'),b2=pt.querySelector('.pt-blob2');
+  b1.style.cssText='transform:scaleY(1);border-radius:0;transition:none;';
+  b2.style.cssText='transform:scaleY(1);border-radius:0;transition:none;';
+  requestAnimationFrame(()=>{requestAnimationFrame(()=>{
+    b1.classList.add('up');b2.classList.add('up');
+    setTimeout(()=>{b1.style.cssText='';b2.style.cssText='';b1.classList.remove('up');b2.classList.remove('up');},900);
+  });});
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.product-card').forEach(card=>{card.style.display=(f==='all'||card.dataset.cat===f)?'':'none';});
+  });
+});
+
+function searchCards(q){
+  const query=q.toLowerCase().trim();
+  const cards=document.querySelectorAll('.product-card');
+  let found=0;
+  cards.forEach(card=>{
+    const name=card.querySelector('.card-name').textContent.toLowerCase();
+    const num=card.querySelector('.card-num').textContent.toLowerCase();
+    const match=!query||name.includes(query)||num.includes(query);
+    card.style.display=match?'':'none';
+    if(match)found++;
+  });
+  document.getElementById('noResults').style.display=found===0?'block':'none';
+}
+
+const models={
+  1:{num:'СПЕЦОБУВЬ — 01',title:'МОДЕЛЬ 01',cat:'Защитные ботинки · Категория S3',photos:['01.jpeg','01-1.jpeg','01-2.jpeg','01-3.jpeg','01-4.jpeg','01-5.jpeg','01-6.jpeg','01-7.jpeg'],tags:['S3','Ботинки','Металл. подносок','Антипрокол','Натур. кожа'],specs:[['Тип','Ботинки'],['Категория','S3'],['Материал','Натуральная кожа'],['Подносок','Металлический'],['Антипрокол','Металл. пластина'],['Подошва','PU+PU'],['Размеры (EU)','36 — 47']]},
+  2:{num:'СПЕЦОБУВЬ — 02',title:'МОДЕЛЬ 02',cat:'Ботинки TSG-02 · Категория S3',photos:['02.jpeg','02-1.jpeg','02-2.jpeg','02-3.jpeg','02-04.jpeg','02-05.jpeg','02-06.jpeg','02-07.jpeg','02-08.jpeg','02-09.jpeg','02-10.jpeg','02-11.jpeg','02-12.jpeg','02-13.jpeg','02-14.jpeg','02-15.jpeg'],tags:['S3','Ботинки','Металл. подносок','Антипрокол','Натур. кожа'],specs:[['Тип','Ботинки TSG-02'],['Категория','S3'],['Материал','Натуральная кожа'],['Подносок','Металлический'],['Антипрокол','Металл. пластина'],['Подошва','PU+PU'],['Размеры (EU)','36 — 47']]},
+  3:{num:'СПЕЦОБУВЬ — 03',title:'МОДЕЛЬ 03',cat:'Ботинки TSG-03 · Категория S3',photos:['03.jpeg','03-1.jpeg','03-2.jpeg','03-3.jpeg','03-4.jpeg','03-5.jpeg','03-6.jpeg','03-7.jpeg','03-8.jpeg','03-9.jpeg','03-10.jpeg','03-11.jpeg','03-12.jpeg','03-13.jpeg','03-14.jpeg','03-15.jpeg','03-16.jpeg'],tags:['S3','Ботинки','Металл. подносок','Антипрокол','Натур. кожа'],specs:[['Тип','Ботинки TSG-03'],['Категория','S3'],['Материал','Натуральная кожа'],['Подносок','Металлический'],['Антипрокол','Металл. пластина'],['Подошва','PU+PU'],['Размеры (EU)','36 — 47']]},
+  5:{num:'СПЕЦОБУВЬ — 05',title:'МОДЕЛЬ 05',cat:'Рабочие сапоги · Категория S3',photos:[],tags:['S3','Сапоги','Металл. подносок','Антипрокол'],specs:[['Тип','Рабочие сапоги'],['Категория','S3'],['Материал','Натуральная кожа'],['Подносок','Металлический'],['Размеры (EU)','36 — 47']]},
+  '01m':{num:'СПЕЦОБУВЬ — 01М',title:'МОДЕЛЬ 01М',cat:'Зимние ботинки · S3 · Утеплённые',photos:[],tags:['S3','Зимние','Утеплённые','Металл. подносок'],specs:[['Тип','Зимние ботинки'],['Категория','S3'],['Утеплитель','Мех / Термоизоляция'],['Подносок','Металлический'],['Размеры (EU)','36 — 47']]}
+};
+
+let curPhotos=[],curIdx=0;
+function openModal(id){
+  const m=models[id];if(!m)return;
+  document.getElementById('mNum').textContent=m.num;
+  document.getElementById('mTitle').textContent=m.title;
+  document.getElementById('mCat').textContent=m.cat;
+  document.getElementById('mTags').innerHTML=m.tags.map(t=>`<span class="tag">${t}</span>`).join('');
+  document.getElementById('mSpecs').innerHTML=m.specs.map(([k,v])=>`<div class="spec-item"><div class="spec-key">${k}</div><div class="spec-val">${v}</div></div>`).join('');
+  curPhotos=m.photos||[];curIdx=0;updateGallery();
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function updateGallery(){
+  const img=document.getElementById('mMainImg'),noPhoto=document.getElementById('mNoPhoto'),prev=document.getElementById('mPrev'),next=document.getElementById('mNext'),dots=document.getElementById('mDots');
+  if(curPhotos.length>0){img.src=curPhotos[curIdx];img.style.display='block';noPhoto.style.display='none';prev.style.display=curPhotos.length>1?'flex':'none';next.style.display=curPhotos.length>1?'flex':'none';dots.innerHTML=curPhotos.map((_,i)=>`<div class="modal-dot${i===curIdx?' active':''}" onclick="showPhoto(${i})"></div>`).join('');}
+  else{img.style.display='none';noPhoto.style.display='flex';prev.style.display='none';next.style.display='none';dots.innerHTML='';}
+}
+function showPhoto(i){curIdx=i;updateGallery();}
+function changePhoto(dir){curIdx=(curIdx+dir+curPhotos.length)%curPhotos.length;updateGallery();}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
+function closeModalOutside(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+
+let touchStartX=0,touchEndX=0;
+document.getElementById('mGallery').addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].screenX;},{passive:true});
+document.getElementById('mGallery').addEventListener('touchend',e=>{touchEndX=e.changedTouches[0].screenX;if(Math.abs(touchStartX-touchEndX)>40)changePhoto(touchStartX-touchEndX>0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if(e.key==='ArrowLeft')changePhoto(-1);if(e.key==='ArrowRight')changePhoto(1);});
+
+const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+</script>
+</body>
+</html>
