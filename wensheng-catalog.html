@@ -7,9 +7,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-:root{--black:#ffffff;--blue:#1565c0;--blue-light:#1e88e5;--blue-dark:#0d47a1;--orange:#f57c00;--orange-light:#ff9800;--white:#1a2340;--gray:#f4f6fb;--gray2:#eef1f8;--muted:#7a8aaa;}
+:root{--black:#f5f7fa;--blue:#1565c0;--blue-light:#1e88e5;--blue-dark:#0d47a1;--orange:#f57c00;--orange-light:#ff9800;--white:#0d1b2a;--gray:#edf0f7;--gray2:#e4e8f2;--muted:#8090b0;}
 html{scroll-behavior:smooth;}
-body{background:var(--black);color:#1a2340;font-family:'Manrope',sans-serif;overflow-x:hidden;cursor:none;}
+body{background:var(--black);color:#0d1b2a;font-family:'Manrope',sans-serif;overflow-x:hidden;cursor:none;}
 
 .pt{position:fixed;inset:0;z-index:9000;pointer-events:none;}
 .pt-blob{position:absolute;inset:0;background:var(--blue);transform:scaleY(0);transform-origin:bottom;border-radius:0 0 50% 50%/0 0 60px 60px;transition:transform .55s cubic-bezier(.76,0,.24,1),border-radius .55s cubic-bezier(.76,0,.24,1);}
@@ -24,11 +24,11 @@ body{background:var(--black);color:#1a2340;font-family:'Manrope',sans-serif;over
 .cursor-ring.big{width:64px;height:64px;border-color:var(--orange);background:rgba(245,124,0,.05);}
 
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:22px 60px;transition:background .4s,padding .4s;}
-nav.scrolled{background:rgba(255,255,255,.97);backdrop-filter:blur(20px);padding:14px 60px;border-bottom:1px solid rgba(21,101,192,.1);}
+nav.scrolled{background:rgba(245,247,250,.97);backdrop-filter:blur(20px);padding:14px 60px;border-bottom:1px solid rgba(21,101,192,.1);}
 .logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
 .logo img{width:38px;height:38px;object-fit:contain;}
 .logo-text{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.15em;background:linear-gradient(135deg,var(--blue-light),var(--orange-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-back{display:flex;align-items:center;gap:8px;text-decoration:none;color:rgba(26,35,64,.55);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;font-weight:600;transition:color .2s;cursor:none;}
+.nav-back{display:flex;align-items:center;gap:8px;text-decoration:none;color:rgba(13,27,42,.5);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;font-weight:600;transition:color .2s;cursor:none;}
 .nav-back:hover{color:var(--blue);}
 .nav-back::before{content:'←';font-size:1rem;transition:transform .2s;}
 .nav-back:hover::before{transform:translateX(-4px);}
@@ -39,26 +39,26 @@ nav.scrolled{background:rgba(255,255,255,.97);backdrop-filter:blur(20px);padding
 .cat-hero-tag::before{content:'';width:20px;height:1px;background:var(--orange);}
 .cat-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,6rem);line-height:.95;letter-spacing:.02em;margin-bottom:20px;}
 .cat-hero h1 span{background:linear-gradient(135deg,var(--blue-light),var(--orange-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.cat-hero-sub{font-size:.88rem;color:#7a8aaa;max-width:500px;line-height:1.8;}
+.cat-hero-sub{font-size:.88rem;color:#8090b0;max-width:500px;line-height:1.8;}
 
-.filters{padding:32px 60px;display:flex;gap:12px;border-bottom:1px solid rgba(255,255,255,.04);position:sticky;top:60px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);z-index:100;}
+.filters{padding:32px 60px;display:flex;gap:12px;border-bottom:1px solid rgba(255,255,255,.04);position:sticky;top:60px;background:rgba(245,247,250,.96);backdrop-filter:blur(20px);z-index:100;}
 .filter-btn{font-family:'Manrope',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:10px 24px;border:1px solid rgba(255,255,255,.08);background:transparent;color:var(--muted);cursor:none;transition:all .25s;}
 .filter-btn:hover{border-color:rgba(245,124,0,.4);color:var(--white);}
 .filter-btn.active{background:linear-gradient(135deg,var(--blue),var(--blue-dark));border-color:var(--blue);color:#fff;}
 
 .search-bar{padding:20px 60px;position:relative;border-bottom:1px solid rgba(255,255,255,.04);}
-.search-bar input{width:100%;background:rgba(21,101,192,.04);border:1px solid rgba(21,101,192,.15);color:#1a2340;font-family:'Manrope',sans-serif;font-size:.85rem;padding:14px 48px 14px 20px;outline:none;transition:border-color .2s;}
+.search-bar input{width:100%;background:rgba(21,101,192,.04);border:1px solid rgba(21,101,192,.15);color:#0d1b2a;font-family:'Manrope',sans-serif;font-size:.85rem;padding:14px 48px 14px 20px;outline:none;transition:border-color .2s;}
 .search-bar input:focus{border-color:rgba(245,124,0,.4);}
 .search-bar input::placeholder{color:var(--muted);}
 .search-icon{position:absolute;right:80px;top:50%;transform:translateY(-50%);font-size:1rem;opacity:.4;}
-.no-results{display:none;text-align:center;padding:80px;color:#7a8aaa;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;grid-column:1/-1;}
+.no-results{display:none;text-align:center;padding:80px;color:var(--muted);font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;grid-column:1/-1;}
 
 .catalog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:2px;}
 .product-card{background:#fff;position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.23,1,.32,1);cursor:none;}
 .product-card:hover{transform:translateY(-6px);z-index:2;}
 .product-card::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(21,101,192,.1),transparent);opacity:0;transition:opacity .3s;z-index:1;}
 .product-card:hover::before{opacity:1;}
-.card-img{width:100%;aspect-ratio:4/3;overflow:hidden;background:#eef1f8;position:relative;display:flex;align-items:center;justify-content:center;}
+.card-img{width:100%;aspect-ratio:4/3;overflow:hidden;background:#e4e8f2;position:relative;display:flex;align-items:center;justify-content:center;}
 .card-img img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .5s;}
 .product-card:hover .card-img img{transform:scale(1.04);}
 .card-img-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;opacity:.2;}
@@ -69,7 +69,7 @@ nav.scrolled{background:rgba(255,255,255,.97);backdrop-filter:blur(20px);padding
 .card-body{padding:24px 24px 28px;}
 .card-num{font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;}
 .card-name{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.04em;margin-bottom:8px;}
-.card-cat{font-size:.72rem;color:#7a8aaa;margin-bottom:12px;}
+.card-cat{font-size:.72rem;color:var(--muted);margin-bottom:12px;}
 .card-arrow{position:absolute;bottom:24px;right:24px;width:32px;height:32px;border:1px solid rgba(21,101,192,.3);display:flex;align-items:center;justify-content:center;color:var(--blue-light);font-size:.8rem;opacity:0;transform:translate(6px,6px);transition:opacity .3s,transform .3s;z-index:2;}
 .product-card:hover .card-arrow{opacity:1;transform:translate(0,0);}
 
@@ -78,7 +78,7 @@ nav.scrolled{background:rgba(255,255,255,.97);backdrop-filter:blur(20px);padding
 .modal{background:#fff;width:92%;max-width:1000px;max-height:92vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;transform:translateY(30px);transition:transform .4s cubic-bezier(.23,1,.32,1);scrollbar-width:none;}
 .modal-overlay.open .modal{transform:translateY(0);}
 .modal::-webkit-scrollbar{display:none;}
-.modal-gallery{position:relative;background:#eef1f8;min-height:400px;display:flex;align-items:center;justify-content:center;}
+.modal-gallery{position:relative;background:#e4e8f2;min-height:400px;display:flex;align-items:center;justify-content:center;}
 .modal-main-img{width:100%;height:100%;min-height:400px;object-fit:contain;padding:20px;display:block;}
 .modal-no-photo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:.15;padding:60px;}
 .modal-no-photo span:first-child{font-size:5rem;}
@@ -89,19 +89,19 @@ nav.scrolled{background:rgba(255,255,255,.97);backdrop-filter:blur(20px);padding
 .modal-prev:hover,.modal-next:hover{background:rgba(21,101,192,.35);}
 .modal-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;}
 .modal-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);cursor:none;transition:background .2s;}
-.modal-dot.active{background:var(--orange);}
+.modal-dot.active{background:var(--blue);}
 .modal-info{padding:48px 40px;display:flex;flex-direction:column;position:relative;}
 .modal-close{position:absolute;top:20px;right:20px;background:none;border:1px solid rgba(255,255,255,.08);color:var(--muted);width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:none;transition:all .2s;}
 .modal-close:hover{border-color:var(--orange);color:var(--orange);}
 .modal-num{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
 .modal-title{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.04em;line-height:.95;margin-bottom:8px;}
-.modal-cat{font-size:.78rem;color:#7a8aaa;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.05);}
+.modal-cat{font-size:.78rem;color:var(--muted);margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.05);}
 .modal-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
 .tag{font-size:.58rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:5px 12px;border:1px solid rgba(21,101,192,.25);color:rgba(30,136,229,.8);}
 .specs-title{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
 .specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;}
 .spec-item{background:rgba(21,101,192,.04);padding:12px 16px;}
-.spec-key{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:#7a8aaa;margin-bottom:4px;}
+.spec-key{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
 .spec-val{font-size:.82rem;font-weight:600;}
 .btn-request{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;padding:15px 32px;font-weight:800;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;display:block;text-align:center;transition:transform .2s,box-shadow .2s;margin-top:auto;}
 .btn-request:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(21,101,192,.35);}
@@ -113,7 +113,7 @@ nav.scrolled{background:rgba(255,255,255,.97);backdrop-filter:blur(20px);padding
 .cat-footer{padding:48px 60px;border-top:1px solid rgba(21,101,192,.1);display:flex;align-items:center;justify-content:space-between;}
 .cat-footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.15em;background:linear-gradient(135deg,var(--blue-light),var(--orange-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .cat-footer-links{display:flex;gap:32px;}
-.cat-footer-links a{text-decoration:none;color:#7a8aaa;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;}
+.cat-footer-links a{text-decoration:none;color:#8090b0;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;}
 .cat-footer-links a:hover{color:var(--orange);}
 
 .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.23,1,.32,1),transform .7s cubic-bezier(.23,1,.32,1);}
@@ -142,7 +142,7 @@ nav.scrolled{background:rgba(255,255,255,.97);backdrop-filter:blur(20px);padding
 
 <nav id="nav">
   <a href="wensheng-index.html" class="logo" id="homeLink">
-    <img src="wensheng-logo.jpg" alt="W" style="border-radius:50%;width:38px;height:38px;object-fit:cover;" onerror="this.style.display='none'">
+    <img src="wensheng-logo.jpg" alt="W" style="border-radius:50%;width:38px;height:38px;object-fit:cover;border:2px solid rgba(30,136,229,.3);" onerror="this.style.display='none'">
     <span class="logo-text">WENSHENG</span>
   </a>
   <a href="wensheng-index.html" class="nav-back" id="backLink">На главную</a>
